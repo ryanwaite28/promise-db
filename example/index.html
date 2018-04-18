@@ -122,12 +122,27 @@
           });
         }
 
-        function render_data_li(data) {
-          let li_str = '<li>' +
-            '<p><strong>Name</strong>: ' + data.name + '<br/><strong>uniqueValue</strong>: ' + data.uniqueValue + '</p>'
+        function create_li(data) {
+          let li_str = '<li class="item" id="' + data.uniqueValue + '">' +
+            '<p><strong>Name</strong>: ' + data.name + '<br/><strong>uniqueValue</strong>: ' + data.uniqueValue + '</p>' +
+            '<br/><a class="delete-btn btn btn-danger" data-key="' + data.uniqueValue + '">delete</a>'
           '</li>';
           let li = $(li_str);
+          return li;
+        }
+
+        function render_data_li(data) {
+          let li = create_li(data);
           ul.append(li);
+        }
+
+        function update_data_li(data) {
+          let li = create_li(data);
+          ul.find('#' + data.uniqueValue).replaceWith(li);
+        }
+
+        function delete_data_li(key) {
+          ul.find('#' + key).remove();
         }
 
         $('#add-btn').click(function(){
@@ -137,6 +152,13 @@
             console.log(data);
             render_data_li(data);
           })
+        });
+
+        $(document).on('click', 'a.delete-btn', function(){
+          let key = $(this).data('key');
+          delete_user(key).then(function(){
+            delete_data_li(key);
+          });
         });
 
         // initial page load
