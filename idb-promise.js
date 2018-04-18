@@ -139,16 +139,16 @@
         if(callback && callback.constructor === Function) { callback(event) }
         if(resolved == true) { return; }
         resolved = true;
-        resolve(new DB(db));
+        return resolve(new DB(db));
       };
       self.request.onerror = function(event) {
-        reject(event);
+        return reject(event);
       };
       request.onsuccess = function(event) {
         var db = event.target.result;
         if(resolved == true) { return; }
         resolved = true;
-        resolve(new DB(db));
+        return resolve(new DB(db));
       };
     });
   }

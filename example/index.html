@@ -37,7 +37,7 @@
           var objectStore = db.createObjectStore('users', {keyPath: 'uniqueValue'});
           objectStore.createIndex("name", "name", { unique: false });
 
-          init()
+          setTimeout(init, 3000);
         });
 
         function create_user(data) {
