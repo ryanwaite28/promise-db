@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>PromiseDB - IndexedDB Library</title>
+
+    <link rel="stylesheet" type="text/css" href="https://ryanwaite28.github.io/my-cdn/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="https://ryanwaite28.github.io/my-cdn/css/emerald.css" />
+
+    <script src="https://ryanwaite28.github.io/my-cdn/js/jquery.js"></script>
+    <script src="../idb-promise.min.js"></script>
+  </head>
+  <body>
+
+    <h1 class="text-center">PromiseDB - IndexedDB Library</h1>
+    <hr/>
+
+    <input id="new-name-input" class="input-s1 middlr" type="text" placeholder="Enter a name"/>
+    <br/>
+    <p class="text-center"><a id="add-btn" class="btn btn-success">Create</a></p>
+
+    <br/>
+
+    <ul id="users-list"></ul>
+
+
+    <!--  -->
+
+    <script>
+      $(document).ready(function(){
+
+        let ul = $('#users-list');
+
+        var users_db = IDB('users_db', 1, function(event){
+          console.log(event);
+          var db = event.target.result;
+          var objectStore = db.createObjectStore('users', {keyPath: 'uniqueValue'});
+          objectStore.createIndex("name", "name", { unique: false });
+        });
+
+        function create_user(data) {
+          return new Promise(function(resolve, reject){
+            users_db.then(function(db){
+              db.stores('users').create(data)
+              .then(function(){
+                console.log('added!');
+                return resolve();
+              })
+              .catch(function(e){
+                console.log('error', e);
+                return reject(e);
+              });
+            });
+          });
+        }
+
+        function get_user(key) {
+          return new Promise(function(resolve, reject){
+            users_db.then(function(db){
+              db.stores('users').read(key)
+              .then(function(data){
+                console.log('read!');
+                return resolve(data);
+              })
+              .catch(function(e){
+                console.log('error', e);
+                return reject(e);
+              });
+            });
+          });
+        }
+
+        function get_all_users() {
+          return new Promise(function(resolve, reject){
+            users_db.then(function(db){
+              db.stores('users').get_all()
+              .then(function(data){
+                console.log('read all!');
+                return resolve(data);
+              })
+              .catch(function(e){
+                console.log('error', e);
+                return reject(e);
+              });
+            });
+          });
+        }
+
+        function update_user(key, data) {
+          return new Promise(function(resolve, reject){
+            users_db.then(function(db){
+              db.stores('users').update(key, data)
+              .then(function(){
+                console.log('updated!');
+                return resolve();
+              })
+              .catch(function(e){
+                console.log('error', e);
+                return reject(e);
+              });
+            });
+          });
+        }
+
+        function delete_user(key) {
+          return new Promise(function(resolve, reject){
+            users_db.then(function(db){
+              db.stores('users').destroy(key)
+              .then(function(){
+                console.log('deleted!');
+                return resolve();
+              })
+              .catch(function(e){
+                console.log('error', e);
+                return reject(e);
+              });
+            });
+          });
+        }
+
+        function render_data_li(data) {
+          let li_str = '<li>' +
+            '<p>Name: ' + data.name + '<br/>uniqueValue: ' + data.uniqueValue + '</p>'
+          '</li>';
+          let li = $(li_str);
+          ul.append(li);
+        }
+
+        $('#add-btn').click(function(){
+          let value = $('#new-name-input').val().trim();
+          if(!value) { return; }
+          create_user({ name: value }).then(function(data){
+            render_data_li(data);
+          })
+        });
+
+        // initial page load
+
+        get_all_users().then(function(list){
+          list.forEach(function(data){
+            render_data_li(data);
+          });
+        });
+
+      });
+    </script>
+  </body>
+</html>
