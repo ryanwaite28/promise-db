@@ -15,6 +15,7 @@
 <br/>
 
 Example: https://ryanwaite28.github.io/promise-db/example/index.html
+CDN script link: https://ryanwaite28.github.io/promise-db/idb-promise.min.js
 
 <br/>
 
@@ -88,6 +89,8 @@ This is so that everything can be created in order.
 A break statement will cause some cases to be missed,
 meaning some of your code will not be executed.
 
+### Usage
+
 To access it the db wrapper:
 
 ```javascript
@@ -125,8 +128,9 @@ users_db.then(db => {
 })
 ```
 
-By default, the library will automatically add a property, called 'uniqueValue', to each new item(preferably an object literal) being added to the store.
-That is why 'uniqueValue' was specified as the keyPath when the 'users' object store was created.
+By default, the library will automatically add a property, called `uniqueValue`, to each new item(preferably an object literal) being added to the object store.
+That is why `uniqueValue` was specified as the keyPath when the `users` object store was created.
+You can still specify whatever keyPath that you want.
 
 To update an entry:
 
@@ -210,15 +214,16 @@ users_db.then(db => {
 
 <br/>
 
+### Summary
+
 This is a simple yet efficient library. If you need to use the low-level API,
 simply get the actual database/store object from their wrappers and use that!
 
-Also, one can easily take the source code
-and modify it to their needs!
+Also, one can easily take the source code and modify it to their needs!
 
 Enjoy!
 
----
+-----
 
 # Ryan M. Waite
 #### Web / Mobile Developer
