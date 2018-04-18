@@ -14,7 +14,7 @@
 
 <br/>
 
-Example: https://ryanwaite28.github.io/promise-db/example/index.html
+Example: https://ryanwaite28.github.io/promise-db/example/index.html <br/>
 CDN script link: https://ryanwaite28.github.io/promise-db/idb-promise.min.js
 
 <br/>
