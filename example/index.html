@@ -46,9 +46,9 @@
           return new Promise(function(resolve, reject){
             users_db.then(function(db){
               db.stores('users').create(data)
-              .then(function(){
+              .then(function(obj){
                 console.log('added!');
-                return resolve();
+                return resolve(obj);
               })
               .catch(function(e){
                 console.log('error', e);
@@ -125,7 +125,7 @@
         function create_li(data) {
           let li_str = '<li class="item" id="' + data.uniqueValue + '">' +
             '<p><strong>Name</strong>: ' + data.name + '<br/><strong>uniqueValue</strong>: ' + data.uniqueValue + '</p>' +
-            '<br/><a class="delete-btn btn btn-danger" data-key="' + data.uniqueValue + '">delete</a>' + 
+            '<br/><a class="delete-btn btn btn-danger" data-key="' + data.uniqueValue + '">delete</a>' +
           '</li>';
           let li = $(li_str);
           return li;
