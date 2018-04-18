@@ -42,14 +42,19 @@ The first argument is the name of the database, the second is the version number
 is a callback function. In this callback, this is where you create your object stores, indexes,
 upgrades, etc...
 
+If there is an upgrade needed, then an `event` object will be passed to the callback,
+so error handling is needed.
+
 For example, this create a database that stores users:
 
 ```javascript
 var users_db = IDB('users_db', 1, function(event){
   console.log(event);
-  var db = event.target.result;
-   var objectStore = db.createObjectStore('users', {keyPath: 'uniqueValue'});
-   objectStore.createIndex("name", "name", { unique: false });
+  if(event) {
+    var db = event.target.result;
+    var objectStore = db.createObjectStore('users', {keyPath: 'uniqueValue'});
+    objectStore.createIndex("name", "name", { unique: false });
+  }
 });
 ```
 
@@ -61,7 +66,7 @@ To do upgrades, switch `event.oldVersion`, with each case being whatever changes
 ```javascript
 var users_db = IDB('users_db', 1, function(event){
   var db = event.target.result;
-  if(event.target === 'upgradeneeded') {
+  if(event && event.target === 'upgradeneeded') {
     switch(event.oldVersion) {
       case 0:
         var objectStore = db.createObjectStore('users', {keyPath: 'uniqueValue'});

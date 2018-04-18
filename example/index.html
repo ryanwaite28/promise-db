@@ -33,11 +33,13 @@
 
         var users_db = IDB('users_db', 1, function(event){
           console.log(event);
-          var db = event.target.result;
-          var objectStore = db.createObjectStore('users', {keyPath: 'uniqueValue'});
-          objectStore.createIndex("name", "name", { unique: false });
+          if(event) {
+            var db = event.target.result;
+            var objectStore = db.createObjectStore('users', {keyPath: 'uniqueValue'});
+            objectStore.createIndex("name", "name", { unique: false });
+          }
 
-          setTimeout(init, 3000);
+          setTimeout(init, 2000);
         });
 
         function create_user(data) {

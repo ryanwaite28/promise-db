@@ -146,6 +146,7 @@
       };
       request.onsuccess = function(event) {
         var db = event.target.result;
+        if(callback && callback.constructor === Function) { callback() }
         if(resolved == true) { return; }
         resolved = true;
         return resolve(new DB(db));
