@@ -78,7 +78,7 @@
             return reject(event);
           };
           requestUpdate.onsuccess = function(event) {
-            return resolve(event);
+            return resolve(updates);
           };
         }
       });

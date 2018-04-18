@@ -119,8 +119,8 @@ Here is how you can add data:
 
 ```javascript
 users_db.then(db => {
-  db.stores('users').create({ name: 'John Doe' }).then(() => {
-    console.log('created!');
+  db.stores('users').create({ name: 'John Doe' }).then(data => {
+    console.log('created!', data);
   })
 })
 ```
@@ -132,8 +132,8 @@ To update an entry:
 
 ```javascript
 users_db.then(db => {
-  db.stores('users').update(key, { real: false }).then(() => {
-    console.log('updated!');
+  db.stores('users').update(key, { real: false }).then(data => {
+    console.log('updated!', data);
   })
 })
 ```
