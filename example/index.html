@@ -124,8 +124,11 @@
 
         function create_li(data) {
           let li_str = '<li class="item" id="' + data.uniqueValue + '">' +
-            '<p><strong>Name</strong>: ' + data.name + '<br/><strong>uniqueValue</strong>: ' + data.uniqueValue + '</p>' +
-            '<br/><a class="delete-btn btn btn-danger" data-key="' + data.uniqueValue + '">delete</a>' +
+            '<p>' +
+            '<strong>Name</strong>: ' + data.name + '<br/>' +
+            '<strong>uniqueValue</strong>: ' + data.uniqueValue +
+            ' | <a class="delete-btn" href="#" data-key="' + data.uniqueValue + '">delete</a><br/>' + 
+            '</p>' +
           '</li>';
           let li = $(li_str);
           return li;
@@ -151,6 +154,7 @@
           create_user({ name: value }).then(function(data){
             console.log(data);
             render_data_li(data);
+            $('#new-name-input').val('');
           })
         });
 
