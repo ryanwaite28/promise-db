@@ -100,7 +100,7 @@ To get the actual db object:
 users_db.then(db => { let database = db.get_db(); })
 ```
 
-That db wrapper object, from the `then` call on the bd variable, will have a `stores` method,
+That db wrapper object will have a `stores` method,
 allowing you to get the object store that you want.
 You can only get the object stores that you created when you initialized/upgraded the database.
 
