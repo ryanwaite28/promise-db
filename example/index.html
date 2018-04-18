@@ -125,7 +125,7 @@
         function create_li(data) {
           let li_str = '<li class="item" id="' + data.uniqueValue + '">' +
             '<p><strong>Name</strong>: ' + data.name + '<br/><strong>uniqueValue</strong>: ' + data.uniqueValue + '</p>' +
-            '<br/><a class="delete-btn btn btn-danger" data-key="' + data.uniqueValue + '">delete</a>'
+            '<br/><a class="delete-btn btn btn-danger" data-key="' + data.uniqueValue + '">delete</a>' + 
           '</li>';
           let li = $(li_str);
           return li;
