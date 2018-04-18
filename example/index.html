@@ -132,6 +132,7 @@
           let value = $('#new-name-input').val().trim();
           if(!value) { return; }
           create_user({ name: value }).then(function(data){
+            console.log(data);
             render_data_li(data);
           })
         });

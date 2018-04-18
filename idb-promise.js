@@ -48,7 +48,7 @@
           return reject('could not create', event);
         };
         transaction.oncomplete = function(event) {
-          return resolve();
+          return resolve(data);
         };
         if(!data.uniqueValue || data.uniqueValue.constructor !== String || data.uniqueValue.constructor !== Number) { data.uniqueValue = uniqueValue() }
         var request = objectStore.add(data);
