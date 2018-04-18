@@ -14,6 +14,10 @@
 
 <br/>
 
+Example: https://ryanwaite28.github.io/promise-db/example/index.html
+
+<br/>
+
 ### MDN Web Docs
 Documentation: https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API <br/>
 Usage: https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
