@@ -50,7 +50,11 @@
         transaction.oncomplete = function(event) {
           return resolve(data);
         };
-        if(!data.uniqueValue || data.uniqueValue.constructor !== String || data.uniqueValue.constructor !== Number) { data.uniqueValue = uniqueValue() }
+        if(data.constructor === Object) {
+          if(!data.uniqueValue || data.uniqueValue.constructor !== String || data.uniqueValue.constructor !== Number) {
+            data.uniqueValue = uniqueValue()
+          }
+        }
         var request = objectStore.add(data);
         request.onsuccess = function(event) {};
       });
