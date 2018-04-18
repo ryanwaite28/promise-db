@@ -36,6 +36,8 @@
           var db = event.target.result;
           var objectStore = db.createObjectStore('users', {keyPath: 'uniqueValue'});
           objectStore.createIndex("name", "name", { unique: false });
+
+          init()
         });
 
         function create_user(data) {
@@ -136,11 +138,13 @@
 
         // initial page load
 
-        get_all_users().then(function(list){
-          list.forEach(function(data){
-            render_data_li(data);
+        function init() {
+          get_all_users().then(function(list){
+            list.forEach(function(data){
+              render_data_li(data);
+            });
           });
-        });
+        }
 
       });
     </script>
