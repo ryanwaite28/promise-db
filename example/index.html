@@ -9,6 +9,18 @@
     <link rel="icon" href="../database-logo.png"/>
 
     <style>
+      a.edit-btn {
+        color: orange;
+        margin: 10px 0px 0px 0px;
+        display: inline-block;
+        font-weight: 700;
+      }
+      a.update-btn {
+        color: green;
+        margin: 10px 0px 0px 0px;
+        display: inline-block;
+        font-weight: 700;
+      }
       a.delete-btn {
         color: red;
         margin: 10px 0px 0px 0px;
@@ -37,8 +49,26 @@
         -ms-transition: transition 0.3s;
         transition: 0.3s;
       }
+      ul#users-list li p {
+        margin: 0px;
+      }
       ul#users-list li:hover {
         background: #fbfbfb;
+      }
+      div.edit-container {
+        display: none;
+      }
+      div.edit-container > div {
+        border: 1px solid #a6a6a6;
+        padding: 15px;
+        background: #f0f0f0;
+      }
+      #name-form {
+        display: none;
+      }
+      #loading-img {
+        width: 175px;
+        max-width: 100%;
       }
     </style>
 
@@ -50,9 +80,13 @@
     <h1 class="text-center">PromiseDB - IndexedDB Library</h1>
     <hr/>
 
-    <input id="new-name-input" class="input-s1 middlr" type="text" placeholder="Enter a name"/>
-    <br/>
-    <p class="text-center"><a id="add-btn" class="btn btn-success">Create</a></p>
+    <img id="loading-img" class="middlr" src="loading-2.gif"/>
+
+    <div id="name-form">
+      <input id="new-name-input" class="input-s1 middlr" type="text" placeholder="Enter a name"/>
+      <br/>
+      <p class="text-center"><a id="add-btn" class="btn btn-success">Create</a></p>
+    </div>
 
     <br/>
 
@@ -65,6 +99,7 @@
       $(document).ready(function(){
 
         let ul = $('#users-list');
+        let editing = false;
 
         var users_db = IDB('users_db', 1, function(event){
           console.log(event);
@@ -82,7 +117,7 @@
             users_db.then(function(db){
               db.stores('users').create(data)
               .then(function(obj){
-                console.log('added!');
+                console.log('added!', obj);
                 return resolve(obj);
               })
               .catch(function(e){
@@ -98,7 +133,7 @@
             users_db.then(function(db){
               db.stores('users').read(key)
               .then(function(data){
-                console.log('read!');
+                console.log('read!', data);
                 return resolve(data);
               })
               .catch(function(e){
@@ -114,7 +149,7 @@
             users_db.then(function(db){
               db.stores('users').get_all()
               .then(function(data){
-                console.log('read all!');
+                console.log('read all!', data);
                 return resolve(data);
               })
               .catch(function(e){
@@ -129,9 +164,9 @@
           return new Promise(function(resolve, reject){
             users_db.then(function(db){
               db.stores('users').update(key, data)
-              .then(function(){
-                console.log('updated!');
-                return resolve();
+              .then(function(updates){
+                console.log('updated!', updates);
+                return resolve(updates);
               })
               .catch(function(e){
                 console.log('error', e);
@@ -157,13 +192,24 @@
           });
         }
 
+        //
+
         function create_li(data) {
           let li_str = '<li class="item" id="' + data.uniqueValue + '">' +
             '<p>' +
             '<strong>Name</strong>: ' + data.name + '<br/>' +
             '<strong>uniqueValue</strong>: ' + data.uniqueValue + '<br/>' +
-            '<a class="delete-btn" href="#" data-key="' + data.uniqueValue + '">delete</a>' +
+            '<a id="edit-' + data.uniqueValue + '-btn" class="edit-btn" href="#" data-key="' + data.uniqueValue + '">edit</a> | ' +
+            '<a id="delete-' + data.uniqueValue + '-btn" class="delete-btn" href="#" data-key="' + data.uniqueValue + '">delete</a>' +
             '</p>' +
+            '<div id="update-' + data.uniqueValue + '-container" class="edit-container">' +
+            '<br/>' +
+            '<div>' +
+            '<input id="edit-' + data.uniqueValue + '-input" class="edit-name-input input-s1" type="text" placeholder="Edit name"/>' +
+            '<br/>' +
+            '<a class="update-btn" href="#" data-key="' + data.uniqueValue + '">update</a>' +
+            '</div>' +
+            '</div>'
           '</li>';
           let li = $(li_str);
           return li;
@@ -187,7 +233,6 @@
           let value = $('#new-name-input').val().trim();
           if(!value) { return; }
           create_user({ name: value }).then(function(data){
-            console.log(data);
             render_data_li(data);
             $('#new-name-input').val('');
           })
@@ -200,10 +245,37 @@
           });
         });
 
+        $(document).on('click', 'a.edit-btn', function(){
+          let key = $(this).data('key');
+          let container = $('#update-' + key + '-container');
+          let displayState = $(container).css('display');
+          if(displayState === 'none') {
+            $(container).show();
+            $(this).text('cancel');
+          }
+          else {
+            $(container).hide();
+            $(this).text('edit');
+          }
+        });
+
+        $(document).on('click', 'a.update-btn', function(){
+          let key = $(this).data('key');
+          let value = $('#edit-' + key + '-input').val().trim();
+          if(!value) { return; }
+          update_user(key, { name: value }).then(function(data){
+            update_data_li(data);
+            $('#edit-' + key + '-input').val('');
+            $('#edit-' + key + '-btn').text('edit');
+          })
+        });
+
         // initial page load
 
         function init() {
           get_all_users().then(function(list){
+            $('#loading-img').hide();
+            $('#name-form').show();
             list.forEach(function(data){
               render_data_li(data);
             });

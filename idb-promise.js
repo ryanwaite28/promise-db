@@ -139,21 +139,23 @@
       let resolved = false;
       self.request = window.indexedDB.open(db_name, version);
       self.request.onupgradeneeded = function(event) {
-        var db = event.target.result;
-        if(callback && callback.constructor === Function) { callback(event) }
-        if(resolved == true) { return; }
-        resolved = true;
-        return resolve(new DB(db));
+        if(resolved === false) {
+          resolved = true;
+          var db = event.target.result;
+          if(callback && callback.constructor === Function) { callback(event) }
+          return resolve(new DB(db));
+        }
+      };
+      self.request.onsuccess = function(event) {
+        if(resolved === false) {
+          resolved = true;
+          var db = event.target.result;
+          if(callback && callback.constructor === Function) { callback() }
+          return resolve(new DB(db));
+        }
       };
       self.request.onerror = function(event) {
         return reject(event);
-      };
-      request.onsuccess = function(event) {
-        var db = event.target.result;
-        if(callback && callback.constructor === Function) { callback() }
-        if(resolved == true) { return; }
-        resolved = true;
-        return resolve(new DB(db));
       };
     });
   }
