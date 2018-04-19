@@ -53,7 +53,7 @@ so error handling is needed.
 For example, this create a database that stores users:
 
 ```javascript
-var users_db = IDB('users_db', 1, function(event){
+const users_db = IDB('users_db', 1, function(event){
   console.log(event);
   if(event) {
     var db = event.target.result;
@@ -69,7 +69,7 @@ so store it in a variable for later use.
 To do upgrades, switch `event.oldVersion`, with each case being whatever changes that you want:
 
 ```javascript
-var users_db = IDB('users_db', 1, function(event){
+const users_db = IDB('users_db', 1, function(event){
   var db = event.target.result;
   if(event && event.target === 'upgradeneeded') {
     switch(event.oldVersion) {
