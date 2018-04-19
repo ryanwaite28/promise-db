@@ -74,7 +74,7 @@ var users_db = IDB('users_db', 1, function(event){
   if(event && event.target === 'upgradeneeded') {
     switch(event.oldVersion) {
       case 0:
-        var objectStore = db.createObjectStore('users', {keyPath: 'uniqueValue'});
+        var objectStore = db.createObjectStore('users', {keyPath: 'idb_uniqueValue'});
       case 1:
         let tx = db.transaction(['users']);
         let store = tx.objectStore('users');
@@ -128,8 +128,8 @@ users_db.then(db => {
 })
 ```
 
-By default, the library will automatically add a property, called `uniqueValue`, to each new item(preferably an object literal) being added to the object store.
-That is why `uniqueValue` was specified as the keyPath when the `users` object store was created.
+By default, the library will automatically add some properties, `idb_uniqueValue`, `idb_createdDate` and `idb_updatedDate` (both uses `Date.now()`), to each new item(preferably an object literal) being added to the object store.
+That is why `idb_uniqueValue` was specified as the keyPath when the `users` object store was created.
 You can still specify whatever keyPath that you want.
 
 To update an entry:

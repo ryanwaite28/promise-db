@@ -105,7 +105,7 @@
           console.log(event);
           if(event) {
             var db = event.target.result;
-            var objectStore = db.createObjectStore('users', {keyPath: 'uniqueValue'});
+            var objectStore = db.createObjectStore('users', {keyPath: 'idb_uniqueValue'});
             objectStore.createIndex("name", "name", { unique: false });
           }
 
@@ -195,19 +195,21 @@
         //
 
         function create_li(data) {
-          let li_str = '<li class="item" id="' + data.uniqueValue + '">' +
+          let li_str = '<li class="item" id="' + data.idb_uniqueValue + '">' +
             '<p>' +
             '<strong>Name</strong>: ' + data.name + '<br/>' +
-            '<strong>uniqueValue</strong>: ' + data.uniqueValue + '<br/>' +
-            '<a id="edit-' + data.uniqueValue + '-btn" class="edit-btn" href="#" data-key="' + data.uniqueValue + '" data-name="' + data.name + '">edit</a> | ' +
-            '<a id="delete-' + data.uniqueValue + '-btn" class="delete-btn" href="#" data-key="' + data.uniqueValue + '" data-name="' + data.name + '">delete</a>' +
+            '<strong>uniqueValue</strong>: ' + data.idb_uniqueValue + '<br/>' +
+            '<strong>Created</strong>: ' + String(new Date(data.idb_createdDate)) + '<br/>' +
+            '<strong>Updated</strong>: ' + String(new Date(data.idb_updatedDate)) + '<br/>' +
+            '<a id="edit-' + data.idb_uniqueValue + '-btn" class="edit-btn" href="#" data-key="' + data.idb_uniqueValue + '" data-name="' + data.name + '">edit</a> | ' +
+            '<a id="delete-' + data.idb_uniqueValue + '-btn" class="delete-btn" href="#" data-key="' + data.idb_uniqueValue + '" data-name="' + data.name + '">delete</a>' +
             '</p>' +
-            '<div id="update-' + data.uniqueValue + '-container" class="edit-container">' +
+            '<div id="update-' + data.idb_uniqueValue + '-container" class="edit-container">' +
             '<br/>' +
             '<div>' +
-            '<input id="edit-' + data.uniqueValue + '-input" class="edit-name-input input-s1" type="text" placeholder="Edit name"/>' +
+            '<input id="edit-' + data.idb_uniqueValue + '-input" class="edit-name-input input-s1" type="text" placeholder="Edit name"/>' +
             '<br/>' +
-            '<a class="update-btn" href="#" data-key="' + data.uniqueValue + '" data-name="' + data.name + '">update</a>' +
+            '<a class="update-btn" href="#" data-key="' + data.idb_uniqueValue + '" data-name="' + data.name + '">update</a>' +
             '</div>' +
             '</div>'
           '</li>';
@@ -222,7 +224,7 @@
 
         function update_data_li(data) {
           let li = create_li(data);
-          ul.find('#' + data.uniqueValue).replaceWith(li);
+          ul.find('#' + data.idb_uniqueValue).replaceWith(li);
         }
 
         function delete_data_li(key) {
@@ -264,8 +266,9 @@
 
         $(document).on('click', 'a.update-btn', function(){
           let key = $(this).data('key');
+          let name = $(this).data('name');
           let value = $('#edit-' + key + '-input').val().trim();
-          if(!value) { return; }
+          if(!value || value === name) { return; }
           update_user(key, { name: value }).then(function(data){
             update_data_li(data);
             $('#edit-' + key + '-input').val('');

@@ -51,9 +51,11 @@
           return resolve(data);
         };
         if(data.constructor === Object) {
-          if(!data.uniqueValue || data.uniqueValue.constructor !== String || data.uniqueValue.constructor !== Number) {
-            data.uniqueValue = uniqueValue()
+          if(!data.idb_uniqueValue || data.idb_uniqueValue.constructor !== String || data.idb_uniqueValue.constructor !== Number) {
+            data.idb_uniqueValue = uniqueValue();
           }
+          data.idb_createdDate = Date.now();
+          data.idb_updatedDate = Date.now();
         }
         var request = objectStore.add(data);
         request.onsuccess = function(event) {};
@@ -75,7 +77,8 @@
         var request = objectStore.get(key);
         request.error = function(event) { return reject(event); }
         request.onsuccess = function(event) {
-          if(data.uniqueValue) { delete data.uniqueValue }
+          if(data.idb_uniqueValue) { delete data.idb_uniqueValue }
+          data.idb_updatedDate = Date.now();
           var updates = Object.assign({}, event.target.result, data);
           var requestUpdate = objectStore.put(updates);
           requestUpdate.onerror = function(event) {
