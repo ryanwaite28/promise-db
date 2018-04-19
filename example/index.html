@@ -199,15 +199,15 @@
             '<p>' +
             '<strong>Name</strong>: ' + data.name + '<br/>' +
             '<strong>uniqueValue</strong>: ' + data.uniqueValue + '<br/>' +
-            '<a id="edit-' + data.uniqueValue + '-btn" class="edit-btn" href="#" data-key="' + data.uniqueValue + '">edit</a> | ' +
-            '<a id="delete-' + data.uniqueValue + '-btn" class="delete-btn" href="#" data-key="' + data.uniqueValue + '">delete</a>' +
+            '<a id="edit-' + data.uniqueValue + '-btn" class="edit-btn" href="#" data-key="' + data.uniqueValue + '" data-name="' + data.name + '">edit</a> | ' +
+            '<a id="delete-' + data.uniqueValue + '-btn" class="delete-btn" href="#" data-key="' + data.uniqueValue + '" data-name="' + data.name + '">delete</a>' +
             '</p>' +
             '<div id="update-' + data.uniqueValue + '-container" class="edit-container">' +
             '<br/>' +
             '<div>' +
             '<input id="edit-' + data.uniqueValue + '-input" class="edit-name-input input-s1" type="text" placeholder="Edit name"/>' +
             '<br/>' +
-            '<a class="update-btn" href="#" data-key="' + data.uniqueValue + '">update</a>' +
+            '<a class="update-btn" href="#" data-key="' + data.uniqueValue + '" data-name="' + data.name + '">update</a>' +
             '</div>' +
             '</div>'
           '</li>';
@@ -247,14 +247,17 @@
 
         $(document).on('click', 'a.edit-btn', function(){
           let key = $(this).data('key');
+          let name = $(this).data('name');
           let container = $('#update-' + key + '-container');
           let displayState = $(container).css('display');
           if(displayState === 'none') {
             $(container).show();
+            $('#edit-' + key + '-input').val(name);
             $(this).text('cancel');
           }
           else {
             $(container).hide();
+            $('#edit-' + key + '-input').val('');
             $(this).text('edit');
           }
         });
