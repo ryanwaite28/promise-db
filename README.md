@@ -128,7 +128,7 @@ users_db.then(db => {
 })
 ```
 
-By default, the library will automatically add some properties, `idb_uniqueValue`, `idb_createdDate` and `idb_updatedDate` (both uses `Date.now()`), to each new item(preferably an object literal) being added to the object store.
+By default, the library will automatically add some properties, `idb_uniqueValue`, `idb_createdDate` and `idb_updatedDate` (both uses `Date.now()`), to each new item(when it is an object literal) being added to the object store.
 That is why `idb_uniqueValue` was specified as the keyPath when the `users` object store was created.
 You can still specify whatever keyPath that you want.
 
