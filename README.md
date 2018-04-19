@@ -57,7 +57,7 @@ var users_db = IDB('users_db', 1, function(event){
   console.log(event);
   if(event) {
     var db = event.target.result;
-    var objectStore = db.createObjectStore('users', {keyPath: 'uniqueValue'});
+    var objectStore = db.createObjectStore('users', {keyPath: 'idb_uniqueValue'});
     objectStore.createIndex("name", "name", { unique: false });
   }
 });
