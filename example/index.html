@@ -74,6 +74,7 @@
 
     <script src="https://ryanwaite28.github.io/my-cdn/js/jquery.js"></script>
     <script src="../idb-promise.min.js"></script>
+    <script src="moment.js"></script>
   </head>
   <body>
 
@@ -97,6 +98,12 @@
 
     <script>
       $(document).ready(function(){
+
+        function date_formatter(date) {
+          // format --- December 23, 2017 - 10:40 PM
+          // console.log(date);
+          return moment(date).format('MMMM D, YYYY - h:mm:ss A');
+        }
 
         let ul = $('#users-list');
         let editing = false;
@@ -199,8 +206,8 @@
             '<p>' +
             '<strong>Name</strong>: ' + data.name + '<br/>' +
             '<strong>uniqueValue</strong>: ' + data.idb_uniqueValue + '<br/>' +
-            '<strong>Created</strong>: ' + String(new Date(data.idb_createdDate)) + '<br/>' +
-            '<strong>Updated</strong>: ' + String(new Date(data.idb_updatedDate)) + '<br/>' +
+            '<strong>Created</strong>: ' + String(date_formatter(data.idb_createdDate)) + '<br/>' +
+            '<strong>Updated</strong>: ' + String(date_formatter(data.idb_updatedDate)) + '<br/>' +
             '<a id="edit-' + data.idb_uniqueValue + '-btn" class="edit-btn" href="#" data-key="' + data.idb_uniqueValue + '" data-name="' + data.name + '">edit</a> | ' +
             '<a id="delete-' + data.idb_uniqueValue + '-btn" class="delete-btn" href="#" data-key="' + data.idb_uniqueValue + '" data-name="' + data.name + '">delete</a>' +
             '</p>' +
