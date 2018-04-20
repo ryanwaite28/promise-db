@@ -29,7 +29,7 @@ Usage: https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_Inde
 This library was created for easily using the browser's database, IndexedDB.
 The current API for IndexedDB is low-level and doesn't meet modern standards.
 It takes a lot of code just to carry out basic tasks because the current API still uses event listeners
-for async operations, like `.onsuccess` or `.onerror` methods.
+for async operations, like `.onsuccess` or `.onerror` methods, while having to create transactions and etc...
 
 This library adds a Promise based layer and new interface on top of the current API that simplifies using IndexedDB!
 The library is written in pure JavaScript; no dependencies! Simply include the library before your script
@@ -54,17 +54,19 @@ For example, this create a database that stores users:
 
 ```javascript
 const users_db = IDB('users_db', 1, function(event){
-  console.log(event);
   if(event) {
     var db = event.target.result;
     var objectStore = db.createObjectStore('users', {keyPath: 'idb_uniqueValue'});
     objectStore.createIndex("name", "name", { unique: false });
   }
+  
+  // after your setup code above, you may want to call an init function like so: setTimeout(init, 2000);
+  // this way, you aren't making database calls while it is being initialized/upgraded. 
+  // see the script in the example page
 });
 ```
 
-Calling IDB also returns a Promise, which resolves to a db wrapper -- a function object,
-so store it in a variable for later use.
+Calling IDB also returns a Promise, which resolves to a db wrapper -- a function object. That Promise is stored in a `const` variable for later use.
 
 To do upgrades, switch `event.oldVersion`, with each case being whatever changes that you want:
 
@@ -84,7 +86,7 @@ const users_db = IDB('users_db', 1, function(event){
 });
 ```
 
-Do not use `break` statement in your switch case!
+Do not use `break` statement(s) in your switch case!
 This is so that everything can be created in order.
 A break statement will cause some cases to be missed,
 meaning some of your code will not be executed.
