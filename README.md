@@ -73,7 +73,7 @@ To do upgrades, switch `event.oldVersion`, with each case being whatever changes
 ```javascript
 const users_db = IDB('users_db', 1, function(event){
   var db = event.target.result;
-  if(event && event.target === 'upgradeneeded') {
+  if(event && event.type === 'upgradeneeded') {
     switch(event.oldVersion) {
       case 0:
         var objectStore = db.createObjectStore('users', {keyPath: 'idb_uniqueValue'});
