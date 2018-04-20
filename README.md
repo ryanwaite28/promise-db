@@ -66,7 +66,7 @@ const users_db = IDB('users_db', 1, function(event){
 });
 ```
 
-Calling IDB also returns a Promise, which resolves to a db wrapper -- a function object. That Promise is stored in a `const` variable for later use.
+Calling IDB also returns a `Promise`, which resolves to a db wrapper -- a function object. That Promise is stored in a `const` variable for later use.
 
 To do upgrades, switch `event.oldVersion`, with each case being whatever changes that you want:
 
@@ -93,11 +93,13 @@ meaning some of your code will not be executed.
 
 ### Usage
 
-To access it the db wrapper:
+To access the db wrapper, call the `then` method on the db variable:
 
 ```javascript
 users_db.then(db => { console.log(db); })
 ```
+
+Since the returned Promise from the IDB call is stored in a variable, it can be used indefinitely to access that db wrapper.
 
 To get the actual db object:
 
