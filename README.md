@@ -43,7 +43,7 @@ to start using it:
 
 
 ### Setup
-To create a database, call the IDB function, which is in the global scope.
+To create a database, call the `IDB` function, which is in the global scope.
 The first argument is the name of the database, the second is the version number, the third
 is a callback function. In this callback, this is where you create your object stores, indexes,
 upgrades, etc...
