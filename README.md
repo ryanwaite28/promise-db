@@ -27,6 +27,7 @@ Usage: https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_Inde
 
 ### Info
 This library was created for easily using the browser's database, IndexedDB.
+
 The current API for IndexedDB is low-level and doesn't meet modern standards.
 It takes a lot of code just to carry out basic tasks because the current API still uses event listeners
 for async operations, like `.onsuccess` or `.onerror` methods, while having to create transactions and etc...
