@@ -51,7 +51,7 @@ upgrades, etc...
 If there is an upgrade needed, then an `event` object will be passed to the callback,
 so error handling is needed.
 
-For example, this create a database that stores users:
+For example, this will create a database that stores users:
 
 ```javascript
 const users_db = IDB('users_db', 1, function(event){
