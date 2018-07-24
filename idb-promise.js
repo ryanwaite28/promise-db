@@ -145,16 +145,18 @@
         if(resolved === false) {
           resolved = true;
           var db = event.target.result;
-          if(callback && callback.constructor === Function) { callback(event) }
-          return resolve(new DB(db));
+          var db_wrapper = new DB(db);
+          if(callback && callback.constructor === Function) { callback(event, db_wrapper) }
+          return resolve(db_wrapper);
         }
       };
       self.request.onsuccess = function(event) {
         if(resolved === false) {
           resolved = true;
           var db = event.target.result;
-          if(callback && callback.constructor === Function) { callback() }
-          return resolve(new DB(db));
+          var db_wrapper = new DB(db);
+          if(callback && callback.constructor === Function) { callback(false, db_wrapper) }
+          return resolve(db_wrapper);
         }
       };
       self.request.onerror = function(event) {
