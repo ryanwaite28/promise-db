@@ -163,7 +163,7 @@ To get an entry:
 
 ```javascript
 users_db.then(db => {
-  db.stores('users').get(key).then(data => {
+  db.stores('users').read(key).then(data => {
     console.log('fetched!', data);
   })
 })
