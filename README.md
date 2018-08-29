@@ -60,9 +60,9 @@ const users_db = IDB('users_db', 1, function(event){
     var objectStore = db.createObjectStore('users', {keyPath: 'idb_uniqueValue'});
     objectStore.createIndex("name", "name", { unique: false });
   }
-  
+
   // after your setup code above, you may want to call an init function like so: setTimeout(init, 2000);
-  // this way, you aren't making database calls while it is being initialized/upgraded. 
+  // this way, you aren't making database calls while it is being initialized/upgraded.
   // see the script in the example page
 });
 ```
@@ -92,12 +92,42 @@ This is so that everything can be created in order.
 A break statement will cause some cases to be missed,
 meaning some of your code will not be executed.
 
+Another way to initialize a database:
+
+```javascript
+let users_db;
+
+IDB('users_db', 1, function(event){
+  if(event && event.type === 'upgradeneeded') {
+    var db = event.target.result;
+    switch(event.oldVersion) {
+      case 0:
+        var objectStore = db.createObjectStore('users', {keyPath: 'idb_uniqueValue'});
+      case 1:
+        let tx = db.transaction(['users']);
+        let store = tx.objectStore('users');
+        store.createIndex("name", "name", { unique: false });
+    }
+  }
+}).then(function(db_wrapper){
+  users_db = db_wrapper;
+  // then do other things, like page init ---> init()
+});
+```
+
+This way, you can access the `database` wrapper directly, instead of having to call the `.then` on the variable that would have stored the promise, like so:
+
+```javascript
+users_db.stores('some_store');
+```
+
 ### Usage
 
 To access the db wrapper, call the `then` method on the db variable:
 
 ```javascript
 users_db.then(db => { console.log(db); })
+
 ```
 
 Since the returned Promise from the IDB call is stored in a variable, it can be used indefinitely to access that db wrapper.
@@ -131,6 +161,13 @@ users_db.then(db => {
     console.log('created!', data);
   })
 })
+/*
+ or if you used the other way of initializing the database
+*/
+ users_db.stores('users').create({ name: 'John Doe' }).then(data => {
+   console.log('created!', data);
+ });
+
 ```
 
 By default, the library will automatically add some properties, `idb_uniqueValue`, `idb_createdDate` and `idb_updatedDate` (both uses `Date.now()`), to each new item(when it is an object literal) being added to the object store.
